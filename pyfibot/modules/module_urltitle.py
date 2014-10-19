@@ -179,6 +179,9 @@ def handle_url(bot, user, channel, url, msg):
         if title:
             log.debug("Cache hit")
             return _title(bot, channel, title, True)
+        elif title == False:
+            log.debug("Cache hit: title redundant or disabled by handler.")
+            return
 
     global handlers
     # try to find a specific handler for the URL
@@ -187,6 +190,7 @@ def handle_url(bot, user, channel, url, msg):
         if fnmatch.fnmatch(url, pattern):
             title = ref(url)
             if title is False:
+                cache.put(url, False)
                 log.debug("Title disabled by handler.")
                 return
             elif title is None:
@@ -233,12 +237,12 @@ def handle_url(bot, user, channel, url, msg):
         if not title:
             return
 
-        # Cache generic titles
-        cache.put(url, title)
-
         if config.get("check_redundant", True) and _check_redundant(url, title):
             log.debug("%s is redundant, not displaying" % title)
             return
+
+        # Cache generic titles
+        cache.put(url, title)
 
         ignored_titles = ['404 Not Found', '403 Forbidden']
         if title in ignored_titles:
