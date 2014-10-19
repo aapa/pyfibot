@@ -218,7 +218,6 @@ def handle_url(bot, user, channel, url, msg):
         # no title attribute
         if not title:
             log.debug("No title found, returning")
-            cache.put(url, False)
             return
         title = title.text
     else:
@@ -246,7 +245,6 @@ def handle_url(bot, user, channel, url, msg):
 
         ignored_titles = ['404 Not Found', '403 Forbidden']
         if title in ignored_titles:
-            cache.put(url, False)
             return
         else:
             # Cache generic titles
