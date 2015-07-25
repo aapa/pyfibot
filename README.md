@@ -24,7 +24,6 @@ efficiency
     * Instagram
     * eBay
     * Spotify
-* Bitcoin exchange rates
 * Wolfram Alpha queries
 * Weather
 * RSS support
